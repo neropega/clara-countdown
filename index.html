@@ -183,11 +183,12 @@
     { q: "10. Who is my favorite Star Wars character?", a: "obi wan kenobi" }
   ];
 
-  let currentIndex = 0;
+  let currentIndex = -1;
 
   function startQuiz() {
     document.getElementById("welcomeScreen").style.display = "none";
     document.getElementById("quizPage").style.display = "block";
+    currentIndex = 0;
     showNextQuestion();
   }
 
@@ -196,6 +197,7 @@
       showFinalMessage();
       return;
     }
+
     document.getElementById("questionText").innerText = questions[currentIndex].q;
     document.getElementById("answerInput").value = "";
     document.getElementById("errorMsg").innerText = "";
@@ -214,8 +216,7 @@
       return;
     }
 
-    const correctAnswer = questions[currentIndex].a.toLowerCase();
-    if (input === correctAnswer) {
+    if (currentIndex < questions.length && input === questions[currentIndex].a.toLowerCase()) {
       currentIndex++;
       showNextQuestion();
     } else {
@@ -298,5 +299,6 @@
 
 </body>
 </html>
+
 
 
