@@ -308,6 +308,27 @@ function revealLoveNote() {
     const progress = ((currentIndex) / questions.length) * 100;
     document.getElementById("progressFill").style.width = progress + "%";
   }
+function getLevenshteinDistance(a, b) {
+  const matrix = Array.from({ length: b.length + 1 }, (_, i) =>
+    Array.from({ length: a.length + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+  );
+
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b[i - 1] === a[j - 1]) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j - 1] + 1
+        );
+      }
+    }
+  }
+
+  return matrix[b.length][a.length];
+}
 
 function checkAnswer() {
   const encouragingMessages = [
@@ -318,10 +339,15 @@ function checkAnswer() {
     "I told you, you would need luck 😂"
   ];
 
-  const input = document.getElementById("answerInput").value.trim().toLowerCase();
-  const normalizedInput = input.replace(/[’‘]/g, "'"); // Convert curly apostrophes to straight
+  const inputRaw = document.getElementById("answerInput").value.trim();
+  const input = inputRaw.toLowerCase().replace(/[’‘]/g, "'");
 
-  if (normalizedInput === safeWord.toLowerCase()) {
+  if (input === "") {
+    document.getElementById("errorMsg").innerText = "Don't skip! Give it a try 💖";
+    return;
+  }
+
+  if (input === safeWord.toLowerCase()) {
     document.getElementById("quizPage").style.display = "none";
     document.getElementById("finalMessage").style.display = "none";
     showCountdownPage();
@@ -330,8 +356,12 @@ function checkAnswer() {
 
   const correct = questions[currentIndex].a.toLowerCase();
 
-if (normalizedInput.includes(correct) || correct.includes(normalizedInput)) {
+  const isSimilar =
+    input.includes(correct) ||
+    correct.includes(input) ||
+    getLevenshteinDistance(input, correct) <= 2;
 
+  if (isSimilar) {
     currentIndex++;
     showNextQuestion();
   } else {
