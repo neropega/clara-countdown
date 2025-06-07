@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1. />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>For Clara 💖</title>
   <style>
     body {
@@ -19,8 +19,8 @@
       padding: 20px;
     }
 
-    h1, h2 {
-      margin-top: 20px;
+    h1, h2, p {
+      margin: 20px;
     }
 
     input {
@@ -41,7 +41,7 @@
       cursor: pointer;
     }
 
-    #countdownPage, #finalMessage {
+    #welcomeScreen, #quizPage, #finalMessage, #countdownPage {
       display: none;
     }
 
@@ -95,20 +95,53 @@
       display: block;
       opacity: 1;
     }
+
+    #progressBar {
+      width: 80%;
+      height: 10px;
+      background: #eee;
+      border-radius: 20px;
+      margin: 10px auto;
+      overflow: hidden;
+    }
+
+    #progressFill {
+      height: 100%;
+      width: 0%;
+      background: #ff6b81;
+      transition: width 0.3s ease-in-out;
+    }
+
+    #errorMsg {
+      color: #c0392b;
+      font-size: 0.95rem;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
 
+<!-- Welcome Screen -->
+<div class="container" id="welcomeScreen">
+  <h1>Hi Clara 🌸</h1>
+  <p>Before I can show you what I’ve made,<br> I need to know if you remember a few things we shared…</p>
+  <button onclick="startQuiz()">Start</button>
+</div>
+
+<!-- Quiz -->
 <div class="container" id="quizPage">
   <h1>💌 One step at a time...</h1>
+  <div id="progressBar"><div id="progressFill"></div></div>
   <div id="questionBox">
     <h2 id="questionText"></h2>
     <input type="text" id="answerInput" placeholder="Your answer..." />
     <br />
     <button onclick="checkAnswer()">Submit</button>
+    <div id="errorMsg"></div>
   </div>
 </div>
 
+<!-- Final Message -->
 <div id="finalMessage">
   <h2>🎉 You made it, Clara.</h2>
   <p>Every answer was a memory — and every memory was a step closer to me.</p>
@@ -116,6 +149,7 @@
   <p>— Yigit</p>
 </div>
 
+<!-- Countdown Page -->
 <div id="countdownPage">
   <div id="heart-container"></div>
   <img src="WhatsApp Image 2025-06-06 at 06.30.23.jpeg" alt="Yigit and Clara" class="photo" />
@@ -151,6 +185,12 @@
 
   let currentIndex = 0;
 
+  function startQuiz() {
+    document.getElementById("welcomeScreen").style.display = "none";
+    document.getElementById("quizPage").style.display = "block";
+    showNextQuestion();
+  }
+
   function showNextQuestion() {
     if (currentIndex >= questions.length) {
       showFinalMessage();
@@ -158,6 +198,13 @@
     }
     document.getElementById("questionText").innerText = questions[currentIndex].q;
     document.getElementById("answerInput").value = "";
+    document.getElementById("errorMsg").innerText = "";
+    updateProgressBar();
+  }
+
+  function updateProgressBar() {
+    const progress = ((currentIndex) / questions.length) * 100;
+    document.getElementById("progressFill").style.width = progress + "%";
   }
 
   function checkAnswer() {
@@ -166,12 +213,13 @@
       showCountdownPage();
       return;
     }
+
     const correctAnswer = questions[currentIndex].a.toLowerCase();
     if (input === correctAnswer) {
       currentIndex++;
       showNextQuestion();
     } else {
-      alert("Hmm... that's not quite right. Try again!");
+      document.getElementById("errorMsg").innerText = "Not quite… but I know you’ll remember 💖";
     }
   }
 
@@ -243,7 +291,9 @@
     setInterval(createHeart, 500);
   }
 
-  window.onload = showNextQuestion;
+  window.onload = () => {
+    document.getElementById("welcomeScreen").style.display = "block";
+  };
 </script>
 
 </body>
