@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -15,13 +15,17 @@
       overflow-x: hidden;
     }
 
+    .container {
+      padding: 20px;
+    }
+
     h1, h2 {
       margin-top: 20px;
     }
 
     input {
       padding: 8px;
-      margin: 5px 0 15px;
+      margin: 10px 0 20px;
       width: 80%;
       max-width: 300px;
       border-radius: 6px;
@@ -37,7 +41,7 @@
       cursor: pointer;
     }
 
-    #puzzlePage, #countdownPage {
+    #countdownPage {
       display: none;
     }
 
@@ -76,35 +80,21 @@
     }
 
     @keyframes float {
-      0% {
-        transform: translateY(0) scale(1);
-        opacity: 1;
-      }
-      100% {
-        transform: translateY(-100vh) scale(1.5);
-        opacity: 0;
-      }
+      0% { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
     }
   </style>
 </head>
 <body>
 
-<div id="puzzlePage">
-  <h1>💌 Just a few questions first...</h1>
-  <form id="quizForm">
-    <input placeholder="1. Where did we go to lunch first?" id="q1" />
-    <input placeholder="2. Our favorite place to eat at?" id="q2" />
-    <input placeholder="3. What was the first movie we watched together?" id="q3" />
-    <input placeholder="4. What’s our dream escape?" id="q4" />
-    <input placeholder="5. What is our special date? (dd/mm/yyyy)" id="q5" />
-    <input placeholder="6. I’m the ride that hurls you through hyperspace. Not a plane, not a train — but in your heart, I’m your favorite escape. What am I?" id="q6" />
-    <input placeholder="7. Name of the granny in Space Mountain?" id="q7" />
-    <input placeholder="8. Name of the full-size ship in Space Mountain? (I know they removed it 4 weeks ago but as a veteran I am sure you can find out what it was)" id="q8" />
-    <input placeholder="9. Granny’s iconic line?" id="q9" />
-    <input placeholder="10. Who is my favorite Star Wars character?" id="q10" />
+<div class="container" id="quizPage">
+  <h1>💌 One step at a time...</h1>
+  <div id="questionBox">
+    <h2 id="questionText"></h2>
+    <input type="text" id="answerInput" placeholder="Your answer..." />
     <br />
-    <button type="submit">Submit Answers</button>
-  </form>
+    <button onclick="checkAnswer()">Submit</button>
+  </div>
 </div>
 
 <div id="countdownPage">
@@ -125,23 +115,49 @@
 </div>
 
 <script>
-  const safeWord = "I love yo";
+  const safeWord = "starlight";
 
-  const answers = {
-    q1: "wagamama",
-    q2: "daiu",
-    q3: "nosferatu",
-    q4: "disneyland",
-    q5: "01/02/2025",
-    q6: "hyperspace mountain",
-    q7: "admiral ackbar",
-    q8: "x-wings",
-    q9: "it's a trap",
-    q10: "obi wan kenobi"
-  };
+  const questions = [
+    { q: "1. Where did we go to lunch first?", a: "wagamama" },
+    { q: "2. Our favorite place to eat at?", a: "daiu" },
+    { q: "3. What was the first movie we watched together?", a: "nosferatu" },
+    { q: "4. What’s our dream escape?", a: "disneyland" },
+    { q: "5. What is our special date? (dd/mm/yyyy)", a: "01/02/2025" },
+    { q: "6. I’m the ride that hurls you through hyperspace. Not a plane, not a train — but in your heart, I’m your favorite escape. What am I? ", a: "hyperspace mountain" },
+    { q: "7. Name of the granny in Space Mountain?", a: "admiral ackbar" },
+    { q: "8. Name of the full-size ship in Space Mountain?", a: "x-wings" },
+    { q: "9. Granny’s iconic line?", a: "it's a trap" },
+    { q: "10. Who is my favorite Star Wars character?", a: "obi wan kenobi" }
+  ];
+
+  let currentIndex = 0;
+
+  function showNextQuestion() {
+    if (currentIndex >= questions.length) {
+      showCountdownPage();
+      return;
+    }
+    document.getElementById("questionText").innerText = questions[currentIndex].q;
+    document.getElementById("answerInput").value = "";
+  }
+
+  function checkAnswer() {
+    const input = document.getElementById("answerInput").value.trim().toLowerCase();
+    if (input === safeWord.toLowerCase()) {
+      showCountdownPage();
+      return;
+    }
+    const correctAnswer = questions[currentIndex].a.toLowerCase();
+    if (input === correctAnswer) {
+      currentIndex++;
+      showNextQuestion();
+    } else {
+      alert("Hmm... that's not quite right. Try again!");
+    }
+  }
 
   function showCountdownPage() {
-    document.getElementById("puzzlePage").style.display = "none";
+    document.getElementById("quizPage").style.display = "none";
     document.getElementById("countdownPage").style.display = "block";
 
     const targetDate = new Date("September 21, 2025 00:00:00").getTime();
@@ -168,7 +184,6 @@
     setInterval(updateCountdown, 1000);
 
     const audio = document.getElementById("bg-music");
-    const playBtn = audio;
     const volumeSlider = document.getElementById("volumeControl");
     const volumeIcon = document.getElementById("volumeIcon");
 
@@ -206,39 +221,10 @@
     setInterval(createHeart, 500);
   }
 
-  document.getElementById("quizForm").addEventListener("submit", function (e) {
-    e.preventDefault();
-    const form = e.target;
-    let correct = 0;
-    const userAnswers = {};
-
-    for (let key in answers) {
-      const input = document.getElementById(key);
-      const userValue = input.value.trim().toLowerCase();
-      userAnswers[key] = userValue;
-
-      if (userValue === safeWord.toLowerCase()) {
-        showCountdownPage();
-        return;
-      }
-
-      if (userValue === answers[key].toLowerCase()) {
-        correct++;
-      }
-    }
-
-    if (correct === Object.keys(answers).length) {
-      showCountdownPage();
-    } else {
-      alert("Hmm... not quite. Double-check your answers! 🕵️‍♀️");
-    }
-  });
-
-  // Show puzzle page on load
-  window.onload = () => {
-    document.getElementById("puzzlePage").style.display = "block";
-  };
+  // Start
+  window.onload = showNextQuestion;
 </script>
 
 </body>
 </html>
+
