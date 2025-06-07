@@ -5,25 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>For Clara 💖</title>
   <style>
-    #loveNote {
-  max-width: 600px;
-  max-height: 300px;
-  margin: 40px auto 20px;
-  padding: 20px;
-  background: #ffffffcc;
-  border-radius: 12px;
+    
+   #letterReveal {
+  font-size: 1.2rem;
+  background: #fff6;
+  display: inline-block;
+  margin: 30px auto 20px;
+  padding: 12px 20px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background 0.3s;
+  border: 1px solid #e0dce0;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+}
+
+#letterReveal:hover {
+  background: #fff9;
+}
+
+#loveNote {
+  max-width: 720px;
+  margin: 20px auto 40px;
+  padding: 30px 25px;
+  background: #fffdfdee;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
   overflow-y: auto;
-  font-size: 1.05rem;
-  line-height: 1.7;
-  color: #444;
-  text-align: left;
-  box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  transition: opacity 2s ease;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #333;
+  text-align: justify;
+  font-family: 'Georgia', serif;
   opacity: 0;
+  display: none;
+  transition: opacity 2s ease;
+  border: 1px solid #f0e6f6;
 }
-#loveNote.show {
-  opacity: 1;
+function revealLoveNote() {
+  const note = document.getElementById("loveNote");
+  note.style.display = "block";
+  setTimeout(() => {
+    note.style.opacity = 1;
+  }, 100);
+  document.getElementById("letterReveal").style.display = "none";
 }
+
+
 
     body {
       margin: 0;
@@ -184,7 +211,11 @@
 
 <!-- Countdown Page -->
 <div id="countdownPage">
-  <div id="loveNote">
+ <!-- Letter Button -->
+<div id="letterReveal" onclick="revealLoveNote()">💌 Click to open your letter</div>
+
+<!-- Hidden Love Note -->
+<div id="loveNote">
   <p>
     <strong>In Turkish, we have a saying: “Numbered days pass quickly.”</strong><br />
     Askim, I just want to remind you — we’re almost there.<br />
@@ -206,7 +237,9 @@
     我由衷咁希望，<br />
     我可以繼續令你開心，每一日 🥰
   </p>
+  <p style="text-align:right; font-style: italic; margin-top: 20px;">— Yigit</p>
 </div>
+
 
   <div id="heart-container"></div>
   <img src="WhatsApp Image 2025-06-06 at 06.30.23.jpeg" alt="Yigit and Clara" class="photo" />
@@ -222,6 +255,7 @@
     <span id="volumeIcon">🔉</span>
     <input type="range" id="volumeControl" min="0" max="100" value="30" />
   </div>
+  
 </div>
 <script>
   const safeWord = "starlight";
