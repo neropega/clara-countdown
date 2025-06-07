@@ -312,12 +312,11 @@ function revealLoveNote() {
   function checkAnswer() {
     const input = document.getElementById("answerInput").value.trim().toLowerCase();
     if (input === safeWord.toLowerCase()) {
-  document.getElementById("quizPage").style.display = "none"; // Hide quiz
-  document.getElementById("finalMessage").style.display = "none"; // Hide final message (just in case)
-  showCountdownPage();
-  return;
-}
-
+      document.getElementById("quizPage").style.display = "none";
+      document.getElementById("finalMessage").style.display = "none";
+      showCountdownPage();
+      return;
+    }
 
     const correct = questions[currentIndex].a.toLowerCase();
     if (input.includes(correct)) {
@@ -400,14 +399,23 @@ function revealLoveNote() {
       setTimeout(() => heart.remove(), 6000);
     }
     setInterval(createHeart, 500);
-    document.getElementById("loveNote").classList.add("show");
+  }
 
+  // ✅ This function was missing from your script tag before:
+  function revealLoveNote() {
+    const note = document.getElementById("loveNote");
+    note.style.display = "block";
+    setTimeout(() => {
+      note.style.opacity = 1;
+    }, 100);
+    document.getElementById("letterReveal").style.display = "none";
   }
 
   window.onload = () => {
     document.getElementById("welcomeScreen").style.display = "block";
   };
 </script>
+
 </body>
 </html>
 
