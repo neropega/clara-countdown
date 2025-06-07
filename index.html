@@ -310,6 +310,14 @@ function revealLoveNote() {
   }
 
   function checkAnswer() {
+    const encouragingMessages = [
+  "Not quite… but I know you’ll remember 💖",
+  "Try again askim, I know you’ve got this 🥰",
+  "You're doing amazing just think back ❤️",
+  "Almost there, don’t give up! 💪",
+  "I told you, you would need luck 😂",
+];
+
     const input = document.getElementById("answerInput").value.trim().toLowerCase();
     if (input === safeWord.toLowerCase()) {
       document.getElementById("quizPage").style.display = "none";
@@ -323,7 +331,9 @@ function revealLoveNote() {
       currentIndex++;
       showNextQuestion();
     } else {
-      document.getElementById("errorMsg").innerText = "Not quite… but I know you’ll remember 💖";
+      const msg = encouragingMessages[Math.floor(Math.random() * encouragingMessages.length)];
+document.getElementById("errorMsg").innerText = msg;
+
     }
   }
 
