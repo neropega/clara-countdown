@@ -356,10 +356,13 @@ function checkAnswer() {
 
   const correct = questions[currentIndex].a.toLowerCase();
 
-  const isSimilar =
-    input.includes(correct) ||
-    correct.includes(input) ||
-    getLevenshteinDistance(input, correct) <= 1;
+ const isSimilar = (
+  input === correct ||
+  (input.length >= 4 &&
+   Math.abs(input.length - correct.length) <= 2 &&
+   getLevenshteinDistance(input, correct) <= 1)
+);
+
 
   if (isSimilar) {
     currentIndex++;
