@@ -359,7 +359,7 @@ function checkAnswer() {
   const isSimilar =
     input.includes(correct) ||
     correct.includes(input) ||
-    getLevenshteinDistance(input, correct) <= 2;
+    getLevenshteinDistance(input, correct) <= 1;
 
   if (isSimilar) {
     currentIndex++;
