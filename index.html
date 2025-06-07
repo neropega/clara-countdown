@@ -330,7 +330,8 @@ function checkAnswer() {
 
   const correct = questions[currentIndex].a.toLowerCase();
 
-  if (normalizedInput.includes(correct)) {
+if (normalizedInput.includes(correct) || correct.includes(normalizedInput)) {
+
     currentIndex++;
     showNextQuestion();
   } else {
