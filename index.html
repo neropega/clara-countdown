@@ -66,7 +66,7 @@
     <div class="message">Counting down the days until Clara comes back to the UK 💕 – from Yigit</div>
     
     <!-- Background music -->
-    <audio id="bg-music" autoplay loop>
+    <audio id="bg-music" loop>
       <source src="2025-06-07_17-20-53.mp3" type="audio/mpeg">
       Your browser does not support the audio element.
     </audio>
@@ -102,13 +102,12 @@
       updateCountdown();
       setInterval(updateCountdown, 1000);
 
-      // Try to play music (some browsers may block it)
+      // ✅ Play music now that user has interacted
       const audio = document.getElementById("bg-music");
-      audio.volume = 0.3; // Set lower volume
-      audio.play().catch(e => {
-        console.log("Autoplay blocked, user must interact.");
+      audio.volume = 0.3;
+      audio.play().catch((e) => {
+        console.log("Autoplay blocked:", e);
       });
-
     } else {
       alert("Incorrect password. Reloading...");
       location.reload();
@@ -116,3 +115,4 @@
   </script>
 </body>
 </html>
+
