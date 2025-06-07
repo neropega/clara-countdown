@@ -48,6 +48,21 @@
       margin-bottom: 20px;
     }
 
+    #playMusicBtn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ffffffcc;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    #playMusicBtn:hover {
+      background-color: #fff;
+    }
+
     @media (max-width: 600px) {
       h1 {
         font-size: 2rem;
@@ -64,10 +79,12 @@
     <h1>Countdown to Clara's Return</h1>
     <div class="countdown" id="countdown"></div>
     <div class="message">Counting down the days until Clara comes back to the UK 💕 – from Yigit</div>
-    
+
+    <button id="playMusicBtn">🎵 Play Music</button>
+
     <!-- Background music -->
     <audio id="bg-music" loop>
-      <source src="2025-06-07_17-20-53.mp3" type="audio/mpeg">
+      <source src="2025-06-07_17-20-53.mp3" type="audio/mpeg" />
       Your browser does not support the audio element.
     </audio>
   </div>
@@ -102,12 +119,20 @@
       updateCountdown();
       setInterval(updateCountdown, 1000);
 
-      // ✅ Play music now that user has interacted
       const audio = document.getElementById("bg-music");
-      audio.volume = 0.3;
-      audio.play().catch((e) => {
-        console.log("Autoplay blocked:", e);
+      const playBtn = document.getElementById("playMusicBtn");
+
+      playBtn.addEventListener("click", () => {
+        audio.volume = 0.3;
+        audio.play().then(() => {
+          playBtn.innerText = "🎵 Music Playing";
+          playBtn.disabled = true;
+        }).catch((e) => {
+          alert("Unable to play music. Please try again.");
+          console.log(e);
+        });
       });
+
     } else {
       alert("Incorrect password. Reloading...");
       location.reload();
