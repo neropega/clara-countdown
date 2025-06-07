@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="="en">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1. />
   <title>For Clara 💖</title>
   <style>
     body {
@@ -41,7 +41,7 @@
       cursor: pointer;
     }
 
-    #countdownPage {
+    #countdownPage, #finalMessage {
       display: none;
     }
 
@@ -83,6 +83,18 @@
       0% { transform: translateY(0) scale(1); opacity: 1; }
       100% { transform: translateY(-100vh) scale(1.5); opacity: 0; }
     }
+
+    #finalMessage {
+      opacity: 0;
+      transition: opacity 2s;
+      padding: 50px 20px;
+      font-size: 1.2rem;
+    }
+
+    #finalMessage.show {
+      display: block;
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -95,6 +107,13 @@
     <br />
     <button onclick="checkAnswer()">Submit</button>
   </div>
+</div>
+
+<div id="finalMessage">
+  <h2>🎉 You made it, Clara.</h2>
+  <p>Every answer was a memory — and every memory was a step closer to me.</p>
+  <p>Now scroll down. I'm waiting. 💞</p>
+  <p>— Yigit</p>
 </div>
 
 <div id="countdownPage">
@@ -123,7 +142,7 @@
     { q: "3. What was the first movie we watched together?", a: "nosferatu" },
     { q: "4. What’s our dream escape?", a: "disneyland" },
     { q: "5. What is our special date? (dd/mm/yyyy)", a: "01/02/2025" },
-    { q: "6. I’m the ride that hurls you through hyperspace. Not a plane, not a train — but in your heart, I’m your favorite escape. What am I? ", a: "hyperspace mountain" },
+    { q: "6. I launch without fuel, fly without wings, take you to galaxies far away...", a: "hyperspace mountain" },
     { q: "7. Name of the granny in Space Mountain?", a: "admiral ackbar" },
     { q: "8. Name of the full-size ship in Space Mountain?", a: "x-wings" },
     { q: "9. Granny’s iconic line?", a: "it's a trap" },
@@ -134,7 +153,7 @@
 
   function showNextQuestion() {
     if (currentIndex >= questions.length) {
-      showCountdownPage();
+      showFinalMessage();
       return;
     }
     document.getElementById("questionText").innerText = questions[currentIndex].q;
@@ -156,8 +175,18 @@
     }
   }
 
-  function showCountdownPage() {
+  function showFinalMessage() {
     document.getElementById("quizPage").style.display = "none";
+    const finalMsg = document.getElementById("finalMessage");
+    finalMsg.classList.add("show");
+    setTimeout(() => {
+      showCountdownPage();
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }, 4500);
+  }
+
+  function showCountdownPage() {
+    document.getElementById("finalMessage").style.display = "none";
     document.getElementById("countdownPage").style.display = "block";
 
     const targetDate = new Date("September 21, 2025 00:00:00").getTime();
@@ -198,16 +227,9 @@
     });
 
     function updateVolumeIcon(volume) {
-      if (volume === 0) {
-        volumeIcon.textContent = "🔇";
-      } else if (volume < 0.5) {
-        volumeIcon.textContent = "🔉";
-      } else {
-        volumeIcon.textContent = "🔊";
-      }
+      volumeIcon.textContent = volume === 0 ? "🔇" : volume < 0.5 ? "🔉" : "🔊";
     }
 
-    // Floating hearts
     const heartContainer = document.getElementById("heart-container");
     function createHeart() {
       const heart = document.createElement("div");
@@ -221,10 +243,10 @@
     setInterval(createHeart, 500);
   }
 
-  // Start
   window.onload = showNextQuestion;
 </script>
 
 </body>
 </html>
+
 
