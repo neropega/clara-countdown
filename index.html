@@ -258,7 +258,7 @@ function revealLoveNote() {
   
 </div>
 <script>
-  const safeWord = "starlight";
+  const safeWord = "I love yo!";
 
   const questions = [
     { q: "Where did we go to lunch first?", a: "wagamama" },
@@ -312,9 +312,12 @@ function revealLoveNote() {
   function checkAnswer() {
     const input = document.getElementById("answerInput").value.trim().toLowerCase();
     if (input === safeWord.toLowerCase()) {
-      showCountdownPage();
-      return;
-    }
+  document.getElementById("quizPage").style.display = "none"; // Hide quiz
+  document.getElementById("finalMessage").style.display = "none"; // Hide final message (just in case)
+  showCountdownPage();
+  return;
+}
+
 
     const correct = questions[currentIndex].a.toLowerCase();
     if (input.includes(correct)) {
