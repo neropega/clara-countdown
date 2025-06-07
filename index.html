@@ -3,43 +3,42 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Countdown to Clara</title>
+  <title>For Clara 💖</title>
   <style>
     body {
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
       color: #333;
       text-align: center;
-      overflow: hidden;
-      position: relative;
+      overflow-x: hidden;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 10px;
+    h1, h2 {
+      margin-top: 20px;
     }
 
-    .countdown {
-      font-size: 2rem;
-      font-weight: bold;
-      margin-bottom: 20px;
+    input {
+      padding: 8px;
+      margin: 5px 0 15px;
+      width: 80%;
+      max-width: 300px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
     }
 
-    .message {
-      font-size: 1.2rem;
-      max-width: 90%;
+    button {
+      padding: 10px 20px;
+      font-size: 1rem;
+      background-color: #ffffffcc;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
     }
 
-    #protectedContent {
+    #puzzlePage, #countdownPage {
       display: none;
-      z-index: 2;
     }
 
     .photo {
@@ -51,24 +50,10 @@
       margin-bottom: 20px;
     }
 
-    #playMusicBtn {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 1rem;
-      background-color: #ffffffcc;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    #playMusicBtn:hover {
-      background-color: #fff;
-    }
-
     #volumeContainer {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 10px;
       margin-top: 10px;
     }
@@ -81,19 +66,6 @@
       width: 200px;
     }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 2rem;
-      }
-      .countdown {
-        font-size: 1.5rem;
-      }
-      #volumeControl {
-        width: 150px;
-      }
-    }
-
-    /* Floating hearts animation */
     .heart {
       position: absolute;
       color: #ff6b81;
@@ -116,113 +88,157 @@
   </style>
 </head>
 <body>
-  <!-- Floating heart container -->
+
+<div id="puzzlePage">
+  <h1>💌 Just a few questions first...</h1>
+  <form id="quizForm">
+    <input placeholder="1. Where did we go to lunch first?" id="q1" />
+    <input placeholder="2. Our favorite place to eat at?" id="q2" />
+    <input placeholder="3. What was the first movie we watched together?" id="q3" />
+    <input placeholder="4. What’s our dream escape?" id="q4" />
+    <input placeholder="5. What is our special date? (dd/mm/yyyy)" id="q5" />
+    <input placeholder="6. I’m the ride that hurls you through hyperspace. Not a plane, not a train — but in your heart, I’m your favorite escape. What am I?" id="q6" />
+    <input placeholder="7. Name of the granny in Space Mountain?" id="q7" />
+    <input placeholder="8. Name of the full-size ship in Space Mountain? (I know they removed it 4 weeks ago but as a veteran I am sure you can find out what it was)" id="q8" />
+    <input placeholder="9. Granny’s iconic line?" id="q9" />
+    <input placeholder="10. Who is my favorite Star Wars character?" id="q10" />
+    <br />
+    <button type="submit">Submit Answers</button>
+  </form>
+</div>
+
+<div id="countdownPage">
   <div id="heart-container"></div>
+  <img src="WhatsApp Image 2025-06-06 at 06.30.23.jpeg" alt="Yigit and Clara" class="photo" />
+  <h1>Countdown to Clara's Return</h1>
+  <div class="countdown" id="countdown" style="font-size: 2rem; font-weight: bold;"></div>
+  <div class="message">Counting down the days until Clara comes back to the UK 💕 – from Yigit</div>
 
-  <div id="protectedContent">
-    <img src="WhatsApp Image 2025-06-06 at 06.30.23.jpeg" alt="Yigit and Clara" class="photo" />
-    <h1>Countdown to Clara's Return</h1>
-    <div class="countdown" id="countdown"></div>
-    <div class="message">Counting down the days until Clara comes back to the UK 💕 – from Yigit</div>
+  <audio id="bg-music" loop>
+    <source src="2025-06-07_17-20-53.mp3" type="audio/mpeg" />
+  </audio>
 
-    <button id="playMusicBtn">🎵 Play Music</button>
-
-    <div id="volumeContainer">
-      <span id="volumeIcon">🔉</span>
-      <input type="range" id="volumeControl" min="0" max="100" value="30" />
-    </div>
-
-    <audio id="bg-music" loop>
-      <source src="2025-06-07_17-20-53.mp3" type="audio/mpeg" />
-      Your browser does not support the audio element.
-    </audio>
+  <div id="volumeContainer">
+    <span id="volumeIcon">🔉</span>
+    <input type="range" id="volumeControl" min="0" max="100" value="30" />
   </div>
+</div>
 
-  <script>
-    const password = "01/02/2025";
-    const userInput = prompt("Enter the special date (DD/MM/YYYY):");
+<script>
+  const safeWord = "I love yo";
 
-    if (userInput === password) {
-      document.getElementById("protectedContent").style.display = "block";
+  const answers = {
+    q1: "wagamama",
+    q2: "daiu",
+    q3: "nosferatu",
+    q4: "disneyland",
+    q5: "01/02/2025",
+    q6: "hyperspace mountain",
+    q7: "admiral ackbar",
+    q8: "x-wings",
+    q9: "it's a trap",
+    q10: "obi wan kenobi"
+  };
 
-      const countdownElement = document.getElementById("countdown");
-      const targetDate = new Date("September 21, 2025 00:00:00").getTime();
+  function showCountdownPage() {
+    document.getElementById("puzzlePage").style.display = "none";
+    document.getElementById("countdownPage").style.display = "block";
 
-      function updateCountdown() {
-        const now = new Date().getTime();
-        const distance = targetDate - now;
+    const targetDate = new Date("September 21, 2025 00:00:00").getTime();
+    const countdownElement = document.getElementById("countdown");
 
-        if (distance < 0) {
-          countdownElement.innerHTML = "Clara is here! 💖";
-          return;
-        }
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
 
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      if (distance < 0) {
+        countdownElement.innerHTML = "Clara is here! 💖";
+        return;
       }
 
-      updateCountdown();
-      setInterval(updateCountdown, 1000);
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-      const audio = document.getElementById("bg-music");
-      const playBtn = document.getElementById("playMusicBtn");
-      const volumeSlider = document.getElementById("volumeControl");
-      const volumeIcon = document.getElementById("volumeIcon");
-
-      audio.volume = volumeSlider.value / 100;
-      updateVolumeIcon(audio.volume);
-
-      playBtn.addEventListener("click", () => {
-        audio.play().then(() => {
-          playBtn.innerText = "🎵 Music Playing";
-          playBtn.disabled = true;
-        }).catch((e) => {
-          alert("Unable to play music. Please try again.");
-          console.log(e);
-        });
-      });
-
-      volumeSlider.addEventListener("input", () => {
-        const vol = volumeSlider.value / 100;
-        audio.volume = vol;
-        updateVolumeIcon(vol);
-      });
-
-      function updateVolumeIcon(volume) {
-        if (volume === 0) {
-          volumeIcon.textContent = "🔇";
-        } else if (volume < 0.5) {
-          volumeIcon.textContent = "🔉";
-        } else {
-          volumeIcon.textContent = "🔊";
-        }
-      }
-
-      // Floating heart animation
-      const heartContainer = document.getElementById("heart-container");
-
-      function createHeart() {
-        const heart = document.createElement("div");
-        heart.classList.add("heart");
-        heart.style.left = Math.random() * 100 + "vw";
-        heart.style.fontSize = (Math.random() * 20 + 16) + "px";
-        heart.innerText = "💖";
-        heartContainer.appendChild(heart);
-
-        setTimeout(() => {
-          heart.remove();
-        }, 6000);
-      }
-
-      setInterval(createHeart, 500);
-    } else {
-      alert("Incorrect password. Reloading...");
-      location.reload();
+      countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
     }
-  </script>
+
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    const audio = document.getElementById("bg-music");
+    const playBtn = audio;
+    const volumeSlider = document.getElementById("volumeControl");
+    const volumeIcon = document.getElementById("volumeIcon");
+
+    audio.volume = volumeSlider.value / 100;
+    updateVolumeIcon(audio.volume);
+    audio.play().catch(() => {});
+
+    volumeSlider.addEventListener("input", () => {
+      const vol = volumeSlider.value / 100;
+      audio.volume = vol;
+      updateVolumeIcon(vol);
+    });
+
+    function updateVolumeIcon(volume) {
+      if (volume === 0) {
+        volumeIcon.textContent = "🔇";
+      } else if (volume < 0.5) {
+        volumeIcon.textContent = "🔉";
+      } else {
+        volumeIcon.textContent = "🔊";
+      }
+    }
+
+    // Floating hearts
+    const heartContainer = document.getElementById("heart-container");
+    function createHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("heart");
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.fontSize = (Math.random() * 20 + 16) + "px";
+      heart.innerText = "💖";
+      heartContainer.appendChild(heart);
+      setTimeout(() => heart.remove(), 6000);
+    }
+    setInterval(createHeart, 500);
+  }
+
+  document.getElementById("quizForm").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const form = e.target;
+    let correct = 0;
+    const userAnswers = {};
+
+    for (let key in answers) {
+      const input = document.getElementById(key);
+      const userValue = input.value.trim().toLowerCase();
+      userAnswers[key] = userValue;
+
+      if (userValue === safeWord.toLowerCase()) {
+        showCountdownPage();
+        return;
+      }
+
+      if (userValue === answers[key].toLowerCase()) {
+        correct++;
+      }
+    }
+
+    if (correct === Object.keys(answers).length) {
+      showCountdownPage();
+    } else {
+      alert("Hmm... not quite. Double-check your answers! 🕵️‍♀️");
+    }
+  });
+
+  // Show puzzle page on load
+  window.onload = () => {
+    document.getElementById("puzzlePage").style.display = "block";
+  };
+</script>
+
 </body>
 </html>
