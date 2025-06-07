@@ -117,6 +117,18 @@
       font-size: 0.95rem;
       margin-top: 10px;
     }
+
+    #arrivalMessage {
+      margin-top: 20px;
+      font-size: 1.2rem;
+      color: #444;
+      opacity: 0;
+      transition: opacity 2s ease-in;
+    }
+
+    #arrivalMessage.show {
+      opacity: 1;
+    }
   </style>
 </head>
 <body>
@@ -153,9 +165,9 @@
 <div id="countdownPage">
   <div id="heart-container"></div>
   <img src="WhatsApp Image 2025-06-06 at 06.30.23.jpeg" alt="Yigit and Clara" class="photo" />
-  <h1>Countdown to Clara's Return</h1>
+  <h1 id="countdownTitle">Countdown to Clara's Return</h1>
   <div class="countdown" id="countdown" style="font-size: 2rem; font-weight: bold;"></div>
-  <div class="message">Counting down the days until Clara comes back to the UK 💕 – from Yigit</div>
+  <div id="arrivalMessage">You’re finally home. Let’s make more memories together. — Yigit</div>
 
   <audio id="bg-music" loop>
     <source src="2025-06-07_17-20-53.mp3" type="audio/mpeg" />
@@ -238,28 +250,34 @@
     document.getElementById("finalMessage").style.display = "none";
     document.getElementById("countdownPage").style.display = "block";
 
-    const targetDate = new Date("September 21, 2025 00:00:00").getTime();
+    const arrivalDate = new Date("September 21, 2025 00:00:00").getTime();
+    const now = new Date().getTime();
     const countdownElement = document.getElementById("countdown");
+    const arrivalMessage = document.getElementById("arrivalMessage");
+    const countdownTitle = document.getElementById("countdownTitle");
 
-    function updateCountdown() {
-      const now = new Date().getTime();
-      const distance = targetDate - now;
-
-      if (distance < 0) {
-        countdownElement.innerHTML = "Clara is here! 💖";
-        return;
+    if (now >= arrivalDate) {
+      countdownElement.innerHTML = "Clara is here! 💖";
+      arrivalMessage.classList.add("show");
+      countdownTitle.innerText = "Welcome Home Clara 💞";
+    } else {
+      function updateCountdown() {
+        const distance = arrivalDate - new Date().getTime();
+        if (distance < 0) {
+          countdownElement.innerHTML = "Clara is here! 💖";
+          arrivalMessage.classList.add("show");
+          countdownTitle.innerText = "Welcome Home Clara 💞";
+          return;
+        }
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
       }
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      countdownElement.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
     }
-
-    updateCountdown();
-    setInterval(updateCountdown, 1000);
 
     const audio = document.getElementById("bg-music");
     const volumeSlider = document.getElementById("volumeControl");
@@ -299,6 +317,3 @@
 
 </body>
 </html>
-
-
-
