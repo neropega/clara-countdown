@@ -133,7 +133,8 @@
 </head>
 <body>
 
-<!-- Welcome Screen -->
+
+  <!-- Welcome Screen -->
 <div class="container" id="welcomeScreen">
   <h1>Hi Clara 🌸</h1>
   <p>Before I can show you what I’ve made,<br> I need to know if you remember a few things we shared…</p>
@@ -178,21 +179,31 @@
     <input type="range" id="volumeControl" min="0" max="100" value="30" />
   </div>
 </div>
-
 <script>
   const safeWord = "starlight";
 
   const questions = [
-    { q: "1. Where did we go to lunch first?", a: "wagamama" },
-    { q: "2. Our favorite place to eat at?", a: "daiu" },
-    { q: "3. What was the first movie we watched together?", a: "nosferatu" },
-    { q: "4. What’s our dream escape?", a: "disneyland" },
-    { q: "5. What is our special date? (dd/mm/yyyy)", a: "01/02/2025" },
-    { q: "6. I launch without fuel, fly without wings, take you to galaxies far away...", a: "hyperspace mountain" },
-    { q: "7. Name of the granny in Space Mountain?", a: "admiral ackbar" },
-    { q: "8. Name of the full-size ship in Space Mountain?", a: "x-wings" },
-    { q: "9. Granny’s iconic line?", a: "it's a trap" },
-    { q: "10. Who is my favorite Star Wars character?", a: "obi wan kenobi" }
+    { q: "Where did we go to lunch first?", a: "wagamama" },
+    { q: "Our favorite place to eat at?", a: "daiu" },
+    { q: "What was the first movie we watched together?", a: "nosferatu" },
+    { q: "What’s your dream escape?", a: "disneyland" },
+    { q: "What is our special date? (dd/mm/yyyy)", a: "01/02/2025" },
+    { q: "I’m the ride that hurls you through hyperspace. Not a plane, not a train — but in your heart, I’m your favorite escape. What am I?", a: "hyperspace mountain" },
+    { q: "Name of the granny in Space Mountain?", a: "admiral ackbar" },
+    { q: "Name of the full-size ship in Space Mountain?", a: "x-wings" },
+    { q: "Granny’s iconic line?", a: "it's a trap" },
+    { q: "Who is my favorite Star Wars character?", a: "obi wan kenobi" },
+    { q: "What date did you meet my parents?", a: "07/03/2025" },
+    { q: "What did we eat on our first day in London?", a: "hotpot" },
+    { q: "Where did we go for Valentine's Day?", a: "ivy" },
+    { q: "What drink did my mom give you the first day you met?", a: "turkish tea" },
+    { q: "What is the name of the Turkish restaurant by Vita that we went to?", a: "longa" },
+    { q: "What was the first thing I cooked for you?", a: "pasta" },
+    { q: "How do you say 'I love you' in Turkish?", a: "seni seviyorum" },
+    { q: "Who did I gift you to ask you to go on a Valentine's date?", a: "minnie" },
+    { q: "Which date did we do my pre-birthday celebration?", a: "08/04/2025" },
+    { q: "Which zombie TV series did we start watching that you wanted to stop?", a: "the walking dead" },
+    { q: "Who is my precious girlfriend?", a: "me" }
   ];
 
   let currentIndex = -1;
@@ -209,7 +220,6 @@
       showFinalMessage();
       return;
     }
-
     document.getElementById("questionText").innerText = questions[currentIndex].q;
     document.getElementById("answerInput").value = "";
     document.getElementById("errorMsg").innerText = "";
@@ -228,7 +238,8 @@
       return;
     }
 
-    if (currentIndex < questions.length && input === questions[currentIndex].a.toLowerCase()) {
+    const correct = questions[currentIndex].a.toLowerCase();
+    if (input.includes(correct)) {
       currentIndex++;
       showNextQuestion();
     } else {
@@ -314,6 +325,6 @@
     document.getElementById("welcomeScreen").style.display = "block";
   };
 </script>
-
 </body>
 </html>
+
