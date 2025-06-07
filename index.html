@@ -5,6 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>For Clara 💖</title>
   <style>
+    #loveNote {
+  max-width: 600px;
+  max-height: 300px;
+  margin: 40px auto 20px;
+  padding: 20px;
+  background: #ffffffcc;
+  border-radius: 12px;
+  overflow-y: auto;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #444;
+  text-align: left;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  transition: opacity 2s ease;
+  opacity: 0;
+}
+#loveNote.show {
+  opacity: 1;
+}
+
     body {
       margin: 0;
       padding: 0;
@@ -164,6 +184,30 @@
 
 <!-- Countdown Page -->
 <div id="countdownPage">
+  <div id="loveNote">
+  <p>
+    <strong>In Turkish, we have a saying: “Numbered days pass quickly.”</strong><br />
+    Askim, I just want to remind you — we’re almost there.<br />
+    Just a little more waiting, and we’ll be together again.<br /><br />
+
+    I love you so, so much ❤️<br />
+    You deserve the best this world can offer.<br /><br />
+
+    I truly hope with my whole heart that,<br />
+    I can keep making you smile 🥰<br /><br /><hr /><br />
+
+    <strong>喺土耳其有句說話：「日子係數住過就會過得快。」</strong><br />
+    親愛的，我想提醒你——我哋已經好接近再見嘅日子喇。<br />
+    再等多一陣，就可以緊緊擁抱你。<br /><br />
+
+    我真係好愛你好愛你 ❤️<br />
+    你值得擁有世界上最好嘅一切。<br /><br />
+
+    我由衷咁希望，<br />
+    我可以繼續令你開心，每一日 🥰
+  </p>
+</div>
+
   <div id="heart-container"></div>
   <img src="WhatsApp Image 2025-06-06 at 06.30.23.jpeg" alt="Yigit and Clara" class="photo" />
   <h1 id="countdownTitle">Countdown to Clara's Return</h1>
@@ -319,6 +363,8 @@
       setTimeout(() => heart.remove(), 6000);
     }
     setInterval(createHeart, 500);
+    document.getElementById("loveNote").classList.add("show");
+
   }
 
   window.onload = () => {
